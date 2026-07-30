@@ -1,0 +1,12 @@
+---
+description: Treat each pull request or work item in this demo repository as standalone
+alwaysApply: true
+---
+
+# Standalone demo pull requests
+
+This is a demo repository. When implementing work here, do not inspect open or existing pull requests for context, dependency ordering, or merge expectations unless the user explicitly asks you to do so.
+
+Each pull request or piece of work should stand independently, even when prior work has not merged into `main`.
+
+Use the current branch, the working tree, repository files, and the user's request as the source of truth for implementation decisions. Do not assume open PRs will merge first, and do not adapt new work around unmerged PRs unless the user explicitly scopes the task that way.
