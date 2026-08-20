@@ -370,7 +370,6 @@ function GeneralSettingsEditViewComponent({ model }: SceneComponentProps<General
           weekStart={weekStart}
         />
 
-        {/* @todo: Update "Graph tooltip" description to remove prompt about reloading when resolving #46581 */}
         <CollapsableSection label={t('dashboard-settings.general.panel-options-label', 'Panel options')} isOpen={true}>
           <Stack direction="column" gap={2}>
             <Field
@@ -378,7 +377,7 @@ function GeneralSettingsEditViewComponent({ model }: SceneComponentProps<General
               label={t('dashboard-settings.general.panel-options-graph-tooltip-label', 'Graph tooltip')}
               description={t(
                 'dashboard-settings.general.panel-options-graph-tooltip-description',
-                'Controls tooltip and hover highlight behavior across different panels. Reload the dashboard for changes to take effect'
+                'Controls tooltip and hover highlight behavior across different panels.'
               )}
             >
               <RadioButtonGroup onChange={model.onTooltipChange} options={GRAPH_TOOLTIP_OPTIONS} value={graphTooltip} />
