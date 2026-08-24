@@ -133,6 +133,22 @@ describe('GeneralSettingsEditView', () => {
       expect(screen.queryByText('Folder')).not.toBeInTheDocument();
     });
   });
+
+  describe('Graph tooltip copy', () => {
+    it('does not tell users to reload the dashboard after changing tooltip mode', async () => {
+      const { settings } = await buildTestScene();
+      render(<settings.Component model={settings} />);
+
+      expect(
+        await screen.findByText('Controls tooltip and hover highlight behavior across different panels.')
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByText(
+          'Controls tooltip and hover highlight behavior across different panels. Reload the dashboard for changes to take effect'
+        )
+      ).not.toBeInTheDocument();
+    });
+  });
 });
 
 async function buildTestScene(metaOverrides: Partial<DashboardMeta> = {}) {

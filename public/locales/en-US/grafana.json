@@ -7880,7 +7880,7 @@
       "editable-description": "Set to read-only to disable all editing. Reload the dashboard for changes to take effect",
       "editable-label": "Editable",
       "folder-label": "Folder",
-      "panel-options-graph-tooltip-description": "Controls tooltip and hover highlight behavior across different panels. Reload the dashboard for changes to take effect",
+      "panel-options-graph-tooltip-description": "Controls tooltip and hover highlight behavior across different panels.",
       "panel-options-graph-tooltip-label": "Graph tooltip",
       "panel-options-label": "Panel options",
       "panels-preload-description": "When enabled all panels will start loading as soon as the dashboard has been loaded.",
