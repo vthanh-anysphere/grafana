@@ -29,6 +29,8 @@ const DuplicateMessageTemplateComponent = () => {
     currentData: template,
     isLoading: isLoadingTemplate,
     error: templateFetchError,
+    isError: isTemplateFetchError,
+    isUninitialized: isTemplateUninitialized,
   } = useGetNotificationTemplate({ alertmanager: selectedAlertmanager ?? '', uid: templateUid ?? '' });
 
   const {
@@ -37,8 +39,9 @@ const DuplicateMessageTemplateComponent = () => {
     error: templatesFetchError,
   } = useNotificationTemplates({ alertmanager: selectedAlertmanager ?? '' });
 
-  const isLoading = isLoadingTemplate || templatesLoading;
+  const isLoading = isLoadingTemplate || templatesLoading || isTemplateUninitialized;
   const error = templateFetchError || templatesFetchError;
+  const isError = isTemplateFetchError || Boolean(templatesFetchError);
 
   if (!selectedAlertmanager) {
     return <EntityNotFound entity="Alertmanager" />;
@@ -59,8 +62,8 @@ const DuplicateMessageTemplateComponent = () => {
     );
   }
 
-  if (error) {
-    return isNotFoundError(error) ? (
+  if (error || isError) {
+    return !error || isNotFoundError(error) ? (
       notFoundComponent
     ) : (
       <Alert

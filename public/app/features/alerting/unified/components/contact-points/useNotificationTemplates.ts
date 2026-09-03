@@ -28,6 +28,15 @@ import { type TemplateFormValues } from '../receivers/TemplateForm';
 const apiVersion = `${API_GROUP}/${API_VERSION}`;
 const kind = 'TemplateGroup';
 
+// Config API returns the entire AM config; a missing UID is still a successful HTTP
+// response. Surface that as a 404 so edit/duplicate screens render EntityNotFound
+// instead of hanging on undefined data.
+const TEMPLATE_NOT_FOUND_ERROR = {
+  status: 404,
+  data: { message: 'NotFound' },
+  config: { url: '' },
+};
+
 interface BaseAlertmanagerArgs {
   alertmanager: string;
 }
@@ -117,12 +126,20 @@ interface GetTemplateParams extends BaseAlertmanagerArgs {
 
 export function useGetNotificationTemplate({ alertmanager, uid }: GetTemplateParams) {
   const [fetchAmConfig, amConfigStatus] = useLazyGetAlertmanagerConfigurationQuery({
-    selectFromResult: (state) => ({
-      ...state,
-      data: state.data ? amConfigToTemplate(state.data, uid) : undefined,
-      currentData: state.currentData ? amConfigToTemplate(state.currentData, uid) : undefined,
-      // TODO set error and isError in case template is not found
-    }),
+    selectFromResult: (state) => {
+      const data = state.data ? amConfigToTemplate(state.data, uid) : undefined;
+      const currentData = state.currentData ? amConfigToTemplate(state.currentData, uid) : undefined;
+      const notFound = Boolean(state.data) && !data;
+
+      return {
+        ...state,
+        data,
+        currentData,
+        isError: state.isError || notFound,
+        isSuccess: state.isSuccess && !notFound,
+        error: notFound ? TEMPLATE_NOT_FOUND_ERROR : state.error,
+      };
+    },
   });
   const [fetchTemplate, templateStatus] = useLazyGetTemplateGroupQuery({
     selectFromResult: (state) => {
