@@ -23,7 +23,7 @@ const EditMessageTemplateComponent = () => {
   const templateUid = name ? decodeURIComponent(name) : undefined;
 
   const { selectedAlertmanager } = useAlertmanager();
-  const { currentData, isLoading, error, isUninitialized } = useGetNotificationTemplate({
+  const { currentData, isLoading, error, isUninitialized, isError } = useGetNotificationTemplate({
     alertmanager: selectedAlertmanager ?? '',
     uid: templateUid ?? '',
   });
@@ -38,8 +38,8 @@ const EditMessageTemplateComponent = () => {
     );
   }
 
-  if (error) {
-    return isNotFoundError(error) ? (
+  if (error || isError) {
+    return !error || isNotFoundError(error) ? (
       notFoundComponent
     ) : (
       <Alert

@@ -159,4 +159,20 @@ describe('Templates routes', () => {
 
     expect(ui.templateForm.query()).not.toBeInTheDocument();
   });
+
+  it('shows not found when editing a missing template', async () => {
+    setup([navUrl.edit('does-not-exist')]);
+
+    expect(await screen.findByText('Notification template not found')).toBeInTheDocument();
+    expect(screen.queryByText('Loading template...')).not.toBeInTheDocument();
+    expect(ui.templateForm.query()).not.toBeInTheDocument();
+  });
+
+  it('shows not found when duplicating a missing template', async () => {
+    setup([navUrl.duplicate('does-not-exist')]);
+
+    expect(await screen.findByText('Notification template not found')).toBeInTheDocument();
+    expect(screen.queryByText('Loading notification template')).not.toBeInTheDocument();
+    expect(ui.templateForm.query()).not.toBeInTheDocument();
+  });
 });
