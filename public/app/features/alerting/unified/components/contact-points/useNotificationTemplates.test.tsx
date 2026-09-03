@@ -27,10 +27,9 @@ const wrapper = ({ children }: { children: ReactNode }) => {
 setupMswServer();
 
 async function renderGetTemplate(uid: string) {
-  const { result } = renderHook(
-    () => useGetNotificationTemplate({ alertmanager: GRAFANA_RULES_SOURCE_NAME, uid }),
-    { wrapper }
-  );
+  const { result } = renderHook(() => useGetNotificationTemplate({ alertmanager: GRAFANA_RULES_SOURCE_NAME, uid }), {
+    wrapper,
+  });
 
   await waitFor(() => {
     expect(result.current.isUninitialized).toBe(false);
@@ -42,7 +41,10 @@ async function renderGetTemplate(uid: string) {
 
 describe('useGetNotificationTemplate', () => {
   beforeEach(() => {
-    grantUserPermissions([AccessControlAction.AlertingNotificationsRead, AccessControlAction.AlertingNotificationsWrite]);
+    grantUserPermissions([
+      AccessControlAction.AlertingNotificationsRead,
+      AccessControlAction.AlertingNotificationsWrite,
+    ]);
     mockedShouldUseK8sApi.mockReset();
   });
 
